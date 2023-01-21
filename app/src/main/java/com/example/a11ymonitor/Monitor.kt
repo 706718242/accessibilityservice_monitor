@@ -10,7 +10,7 @@ import kotlin.math.abs
 
 class Monitor: AccessibilityService() {
     companion object {
-        private const val DUMP_NODE = false
+        private const val DUMP_NODE = true
         data class KeyLabel(val k: Int, val v: String)
         private const val TAG = "A11YMonitor"
         private fun bitsMaskToString(bitValue: Int, labels: List<KeyLabel>): String {
@@ -93,7 +93,7 @@ class Monitor: AccessibilityService() {
                 if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
                     topPkgName = event.packageName.toString()
                     topClzName = event.className.toString()
-                    rootInActiveWindow.getBoundsInScreen(screenRect)
+                    rootInActiveWindow?.getBoundsInScreen(screenRect)
                     Log.d(TAG, "screen rect: $screenRect")
                 } else {
                     if (topPkgName != event.packageName) {
@@ -160,11 +160,21 @@ class Monitor: AccessibilityService() {
                             it
                         } else null
                     }
-                } else if (topPkgName == "com.coolapk.market" && topClzName == "com.coolapk.market.view.node.DynamicNodePageActivity") {
-                    found = nodeTreeFindOne(root) once@{
-                        if (it.className.toString() != "android.widget.TextView") return@once null
-                        if (it.text == null) return@once null
-                        if (it.text == "安装") it else null
+                } else if (topPkgName == "com.coolapk.market") {
+                    if (topClzName == "com.coolapk.market.view.node.DynamicNodePageActivity") {
+                        found = nodeTreeFindOne(root) once@{
+                            if (it.className.toString() != "android.widget.TextView") return@once null
+                            if (it.text == null) return@once null
+                            if (it.text == "安装" || it.text == "重新下载") it else null
+                        }
+                    } else if (topClzName == "androidx.appcompat.app.AlertDialog") {
+                        found = nodeTreeFindOne(root) once@{
+                            if (it.className.toString() != "android.widget.Button") return@once null
+                            if (it.text == null) return@once null
+                            if (it.text == "重新下载") it else null
+                        }
+                    } else {
+                        found = null
                     }
                 } else {
                     found = null
