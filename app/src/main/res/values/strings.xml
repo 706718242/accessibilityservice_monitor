@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">a11ymonitor</string>
+    <string name="service_desc">用于演示无障碍服务事件监视</string>
+    <string name="label_goto_a11y_setting">打开无障碍服务设置</string>
+</resources>
