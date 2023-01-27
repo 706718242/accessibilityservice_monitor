@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/service_desc"
-    android:packageNames="com.tencent.android.qqdownloader,com.huawei.appmarket,com.xiaomi.market,com.bbk.appstore,com.heytap.market,com.coolapk.market"
     android:accessibilityEventTypes="typeWindowsChanged|typeWindowStateChanged|typeWindowContentChanged"
     android:accessibilityFeedbackType="feedbackGeneric"
     android:canPerformGestures="true"
